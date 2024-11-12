@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const tempMovieData = [
   {
@@ -51,15 +51,33 @@ const average = (arr) =>
   arr.reduce((acc, cur, i, arr) => acc + cur / arr.length, 0);
 
 const key = "b73df05b";
-const url = `http://www.omdbapi.com/?s=inception&apikey=b73df05b`;
+const url = `http://www.omdbapi.com/?s=interstellar&apikey=${key}`;
 
 export default function App() {
-  fetch(url)
-    .then((response) => response.json())
-    .then((data) => {
-      console.log(data); // Log the entire data to console
-    });
+  // fetch(url)
+  // .then((response) => {
+  //   return response.json(); // Return this to the next .then() block
+  // })
+  // .then((data) => {
+  //   console.log("Actual data:", data); // Now logs the parsed data
+  //   setMovies(data.Search)
+  // })
+  // .catch((error) => console.error("Error fetching data:", error));
 
+  useEffect(
+    function () {
+      fetch(url)
+      .then((res) => res.json())
+      .then((data) => setMovies(data.Search))
+    }, []
+  )
+  // useEffect(() => {
+  //   fetch(url)
+  //     .then((res) => res.json()) // Added parentheses here
+  //     .then((data) => setMovies(data.Search))
+  //     .catch((error) => console.error("Error fetching data:", error));
+  // }, []); // Added an empty dependency array to only run on mount
+  
   const [movies, setMovies] = useState(tempMovieData);
 
   return (
